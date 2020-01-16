@@ -23,45 +23,41 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/spf13/viper"
-	"strings"
+	"github.com/daveio/ws/util"
 
 	"github.com/spf13/cobra"
 )
 
-// envCmd represents the env command
-var envCmd = &cobra.Command{
-	Use: "env",
-	Example: `ws env`,
-	Short: "Output environment for current workspace for your shell to eval",
-	Long: `Outputs the environment values for the current workspace. Used
-by shell integration, to be eval'd or sourced at each prompt render.`,
-	Run:       EnvRun,
+// installCmd represents the install command
+var installCmd = &cobra.Command{
+	Use:   "install",
+	Example: `ws install`,
+	Short: "Set up your shell to work with ws",
+	Long: `Writes shell configuration for your shell of choice.`,
+	Run:       InstallRun,
 	Args:      cobra.NoArgs, // cobra.ExactValidArgs(1),
 	// ValidArgs: []string{"bash", "zsh", "fish"},
 }
 
-func EnvRun(cmd *cobra.Command, args []string) {
-	if viper.IsSet("current-workspace") &&
-		viper.IsSet(fmt.Sprintf("workspaces.%s.env", viper.GetString("current-workspace"))) {
-		var currentWorkspace = viper.GetString("current-workspace")
-		var environment = viper.GetStringMapString(fmt.Sprintf("workspaces.%s.env", currentWorkspace))
-		for k := range environment {
-			fmt.Printf("export %s=%s\n", strings.ToUpper(k), environment[k])
-		}
+func InstallRun(cmd *cobra.Command, args []string) {
+	fmt.Println("install called")
+	if err, thisShell := util.DetectShell(); err != nil {
+		panic(err)
+	} else {
+		fmt.Printf("Shell detected: %s\n", thisShell.Name)
 	}
 }
 
 func init() {
-	rootCmd.AddCommand(envCmd)
+	rootCmd.AddCommand(installCmd)
 
 	// Here you will define your flags and configuration settings.
 
 	// Cobra supports Persistent Flags which will work for this command
 	// and all subcommands, e.g.:
-	// envCmd.PersistentFlags().String("foo", "", "A help for foo")
+	// installCmd.PersistentFlags().String("foo", "", "A help for foo")
 
 	// Cobra supports local flags which will only run when this command
 	// is called directly, e.g.:
-	// envCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// installCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
