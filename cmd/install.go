@@ -43,33 +43,32 @@ var installCmd = &cobra.Command{
 }
 
 func InstallRun(cmd *cobra.Command, args []string) {
-	if err, thisShell := util.DetectShell(); err != nil {
-		panic(err)
+	err, thisShell := util.DetectShell()
+	util.Check(err)
+	readBytes, err := ioutil.ReadFile(thisShell.ConfigFile)
+	util.Check(err)
+	readContent := string(readBytes)
+	if strings.Contains(readContent, thisShell.Template) {
+		fmt.Printf("Not installing: ws env hook already installed for %s\n", thisShell.Name)
 	} else {
-		readBytes, err := ioutil.ReadFile(thisShell.ConfigFile)
-		util.Check(err)
-		readContent := string(readBytes)
-		if strings.Contains(readContent, thisShell.Template) {
-			fmt.Printf("Not installing: ws env hook already installed for %s\n", thisShell.Name)
-		} else {
-			writeContent := []byte(fmt.Sprintf(
-				"%s\n\n%s\n%s\n%s\n\n",
-				readContent,
-				data.HeaderComment,
-				thisShell.Template,
-				data.FooterComment,
-			))
-			backupPath := fmt.Sprintf("%s.ws.old", thisShell.ConfigFile)
-			util.Check(ioutil.WriteFile(
-				backupPath, []byte(readContent), 0640))
-			util.Check(ioutil.WriteFile(
-				thisShell.ConfigFile, writeContent, 0640))
-			fmt.Printf("Installation complete: ws env hook installed for %s.\n", thisShell.Name)
-			fmt.Println("You may need to restart any terminal windows, or log out and back in.")
-			fmt.Printf("Your old shell configuration has been backed up to %s if you need it.\n", backupPath)
-		}
+		writeContent := []byte(fmt.Sprintf(
+			"%s\n\n%s\n%s\n%s\n\n",
+			readContent,
+			data.HeaderComment,
+			thisShell.Template,
+			data.FooterComment,
+		))
+		backupPath := fmt.Sprintf("%s.ws.old", thisShell.ConfigFile)
+		util.Check(ioutil.WriteFile(
+			backupPath, []byte(readContent), 0640))
+		util.Check(ioutil.WriteFile(
+			thisShell.ConfigFile, writeContent, 0640))
+		fmt.Printf("Installation complete: ws env hook installed for %s.\n", thisShell.Name)
+		fmt.Println("You may need to restart any terminal windows, or log out and back in.")
+		fmt.Printf("Your old shell configuration has been backed up to %s if you need it.\n", backupPath)
 	}
 }
+
 
 func init() {
 	rootCmd.AddCommand(installCmd)
