@@ -28,7 +28,7 @@ import (
 )
 
 // switchCmd represents the switch command
-var switchCmd = &cobra.Command{
+var switchCmd = &cobra.Command{ // TODO: metadata
 	Use:   "switch",
 	Short: "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
@@ -53,7 +53,10 @@ func SwitchValidArgs() []string {
 }
 
 func SwitchRun(cmd *cobra.Command, args []string) {
-	fmt.Printf("switching to workspace %s\n", args[0])
+	var requestedWorkspace = args[0]
+	var currentWorkspace = viper.GetString("settings.currentWorkspace")
+	fmt.Printf("Switching from %s to %s\n", currentWorkspace, requestedWorkspace)
+	// TODO: implementation
 }
 
 func init() {

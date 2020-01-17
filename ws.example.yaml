@@ -1,0 +1,26 @@
+---
+settings: # various settings
+  currentWorkspace: example # the name of your current workspace
+  createOnSwitch: false # if true, create an entry in this file if you switch to a workspace which doesn't exist
+
+hooks: # commands to run when switching workspace
+  beforeUp: [] # commands to run before new workspace's 'up' commands
+  afterUp: # commands to run after new workspace's 'up' commands
+    - gcloud auth application-default login
+    - kubens default
+  beforeDown: [] # commands to run before old workspace's 'down' commands
+  afterDown: [] # commands to run after old workspace's 'down' commands
+
+workspaces: # workspace definitions
+  example: # the workspace name
+    up: # commands to run when switching TO this workspace, after old workspace's 'down' commands
+      - gcloud config configurations activate example
+      - gcloud config set project example_project
+      - kubectx example_cluster
+    down: [] # commands to run when switching FROM this workspace, before new workspace's 'up' commands
+    env: # environment variables to set. {} on the same line for none. requires shell integration, see `ws install`
+      EXAMPLE_VAR: abc123 # set environment variable $EXAMPLE_VAR to 'abc123'
+      ANOTHER_VAR: "true" # set environment variable $ANOTHER_VAR to 'true'
+      YET_ANOTHER_VAR: "12345" # set environment variable $YET_ANOTHER_VAR to '12345'
+      # note the quoting in the previous two; otherwise, they would be interpreted as a boolean and a number.
+      # ws tries to do its best if you forget, but it's best to be unambiguous from the start and quote them.

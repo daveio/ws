@@ -23,28 +23,51 @@ package cmd
 
 import (
 	"fmt"
+	"github.com/daveio/ws/data"
 	"github.com/daveio/ws/util"
+	"io/ioutil"
+	"strings"
 
 	"github.com/spf13/cobra"
 )
 
 // installCmd represents the install command
 var installCmd = &cobra.Command{
-	Use:   "install",
+	Use:     "install",
 	Example: `ws install`,
-	Short: "Set up your shell to work with ws",
-	Long: `Writes shell configuration for your shell of choice.`,
-	Run:       InstallRun,
-	Args:      cobra.NoArgs, // cobra.ExactValidArgs(1),
+	Short:   "Set up your shell to work with ws",
+	Long:    `Writes shell configuration for your shell of choice.`,
+	Run:     InstallRun,
+	Args:    cobra.NoArgs, // cobra.ExactValidArgs(1),
 	// ValidArgs: []string{"bash", "zsh", "fish"},
 }
 
 func InstallRun(cmd *cobra.Command, args []string) {
-	fmt.Println("install called")
 	if err, thisShell := util.DetectShell(); err != nil {
 		panic(err)
 	} else {
-		fmt.Printf("Shell detected: %s\n", thisShell.Name)
+		readBytes, err := ioutil.ReadFile(thisShell.ConfigFile)
+		util.Check(err)
+		readContent := string(readBytes)
+		if strings.Contains(readContent, thisShell.Template) {
+			fmt.Printf("Not installing: ws env hook already installed for %s\n", thisShell.Name)
+		} else {
+			writeContent := []byte(fmt.Sprintf(
+				"%s\n\n%s\n%s\n%s\n\n",
+				readContent,
+				data.HeaderComment,
+				thisShell.Template,
+				data.FooterComment,
+			))
+			backupPath := fmt.Sprintf("%s.ws.old", thisShell.ConfigFile)
+			util.Check(ioutil.WriteFile(
+				backupPath, []byte(readContent), 0640))
+			util.Check(ioutil.WriteFile(
+				thisShell.ConfigFile, writeContent, 0640))
+			fmt.Printf("Installation complete: ws env hook installed for %s.\n", thisShell.Name)
+			fmt.Println("You may need to restart any terminal windows, or log out and back in.")
+			fmt.Printf("Your old shell configuration has been backed up to %s if you need it.\n", backupPath)
+		}
 	}
 }
 

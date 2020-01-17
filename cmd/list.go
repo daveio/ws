@@ -29,7 +29,7 @@ import (
 )
 
 // listCmd represents the list command
-var listCmd = &cobra.Command{
+var listCmd = &cobra.Command{ // TODO: metadata
 	Use:   "list",
 	Short: "A brief description of your command",
 	Long: `A longer description that spans multiple lines and likely contains examples
@@ -45,20 +45,25 @@ to quickly create a Cobra application.`,
 func ListRun(cmd *cobra.Command, args []string) {
 	var workspaces = viper.GetStringMapStringSlice("workspaces")
 	for key := range workspaces {
+		currentWorkspace := viper.GetString("settings.currentWorkspace")
+		boringFlag, err := cmd.Flags().GetBool("boring")
+		if err == nil && !boringFlag {
+			if key == currentWorkspace {
+				fmt.Print("✅ ")
+			} else {
+				fmt.Print("   ")
+			}
+		}
         fmt.Printf("%s\n", key)
+
 	}
 }
 
 func init() {
 	rootCmd.AddCommand(listCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// listCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// listCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	listCmd.Flags().BoolP(
+		"boring",
+		"b",
+		false,
+		"Output a plain list without the 'active workspace' indicator")
 }

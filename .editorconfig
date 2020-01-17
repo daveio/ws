@@ -13,3 +13,7 @@ ij_wrap_on_typing = false
 [*.{yaml,yml}]
 indent_style = space
 indent_size = 2
+
+[*.{md,markdown}]
+indent_style = space
+indent_size = 2

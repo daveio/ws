@@ -33,7 +33,7 @@ import (
 var cfgFile string
 
 // rootCmd represents the base command when called without any subcommands
-var rootCmd = &cobra.Command{
+var rootCmd = &cobra.Command{ // TODO: metadata
 	Use:   "ws",
 	Short: "A brief description of your application",
 	Long: `A longer description that spans multiple lines and likely contains
@@ -67,7 +67,7 @@ func init() {
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
-	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
+	// rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
 // initConfig reads in config file and ENV variables if set.

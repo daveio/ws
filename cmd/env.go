@@ -23,10 +23,8 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/spf13/viper"
-	"strings"
-
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
 )
 
 // envCmd represents the env command
@@ -42,12 +40,12 @@ by shell integration, to be eval'd or sourced at each prompt render.`,
 }
 
 func EnvRun(cmd *cobra.Command, args []string) {
-	if viper.IsSet("current-workspace") &&
-		viper.IsSet(fmt.Sprintf("workspaces.%s.env", viper.GetString("current-workspace"))) {
-		var currentWorkspace = viper.GetString("current-workspace")
+	if viper.IsSet("settings.currentWorkspace") &&
+		viper.IsSet(fmt.Sprintf("workspaces.%s.env", viper.GetString("settings.currentWorkspace"))) {
+		var currentWorkspace = viper.GetString("settings.currentWorkspace")
 		var environment = viper.GetStringMapString(fmt.Sprintf("workspaces.%s.env", currentWorkspace))
 		for k := range environment {
-			fmt.Printf("export %s=%s\n", strings.ToUpper(k), environment[k])
+			fmt.Printf("%s=%s\n", k, environment[k])
 		}
 	}
 }

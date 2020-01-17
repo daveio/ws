@@ -2,6 +2,7 @@ package util
 
 import (
 	"fmt"
+	"github.com/daveio/ws/data"
 	"github.com/mitchellh/go-homedir"
 	"os"
 	"strings"
@@ -10,14 +11,13 @@ import (
 type Shell struct {
 	Name       string
 	ConfigFile string
+	Template   string
 }
 
-// create a struct
 type ShellDetectionError struct {
 	EnvVar string
 }
 
-// struct implements `Error` method
 func (err ShellDetectionError) Error() string {
 	return fmt.Sprintf("Shell detection failed. $SHELL: %s", err.EnvVar)
 }
@@ -26,14 +26,21 @@ var (
 	bashShell = Shell{
 		Name:       "bash",
 		ConfigFile: fmt.Sprintf("%s%s.bashrc", GetHomedir(), string(os.PathSeparator)),
+		Template:   data.BashTemplate,
 	}
 	zshShell = Shell{
 		Name:       "zsh",
 		ConfigFile: fmt.Sprintf("%s%s.zshrc", GetHomedir(), string(os.PathSeparator)),
+		Template:   data.ZshTemplate,
 	}
 	fishShell = Shell{
 		Name:       "fish",
-		ConfigFile: fmt.Sprintf("%s%s.fishrc", GetHomedir(), string(os.PathSeparator)),
+		ConfigFile: fmt.Sprintf("%s%s.config%sfish%sconfig.fish",
+			GetHomedir(),
+			string(os.PathSeparator),
+			string(os.PathSeparator),
+			string(os.PathSeparator)),
+		Template:   data.FishTemplate,
 	}
 	shellDetectOrder = [3]Shell{fishShell, zshShell, bashShell}
 )
@@ -54,10 +61,15 @@ func DetectShell() (err error, shell Shell) {
 		for _, thisShell := range shellDetectOrder {
 			if strings.Contains(currentShellName, thisShell.Name) {
 				// $SHELL contains thisShell.Name
-				fmt.Println(thisShell.ConfigFile)
 				return nil, thisShell
 			}
 		}
 	}
 	return ShellDetectionError{EnvVar: currentShellName}, Shell{}
+}
+
+func Check(e error) {
+    if e != nil {
+        panic(e)
+    }
 }
