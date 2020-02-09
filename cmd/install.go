@@ -42,7 +42,7 @@ var installCmd = &cobra.Command{
 	// ValidArgs: []string{"bash", "zsh", "fish"},
 }
 
-func InstallRun(cmd *cobra.Command, args []string) {
+func InstallRun(_ *cobra.Command, _ []string) {
 	err, thisShell := util.DetectShell()
 	util.Check(err)
 	readBytes, err := ioutil.ReadFile(thisShell.ConfigFile)

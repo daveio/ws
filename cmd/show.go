@@ -37,9 +37,9 @@ var showCmd = &cobra.Command{
 	Args: cobra.NoArgs,
 }
 
-func ShowRun(cmd *cobra.Command, args []string) {
-	if viper.IsSet("settings.currentWorkspace") {
-		fmt.Println(viper.Get("settings.currentWorkspace"))
+func ShowRun(_ *cobra.Command, _ []string) {
+	if viper.IsSet("settings.currentworkspace") {
+		fmt.Println(viper.Get("settings.currentworkspace"))
 	} else {
 		panic("No current workspace! Set with 'ws switch WORKSPACE_NAME'.")
 	}

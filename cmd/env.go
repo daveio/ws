@@ -25,6 +25,7 @@ import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"strings"
 )
 
 // envCmd represents the env command
@@ -39,14 +40,15 @@ by shell integration, to be eval'd or sourced at each prompt render.`,
 	// ValidArgs: []string{"bash", "zsh", "fish"},
 }
 
-func EnvRun(cmd *cobra.Command, args []string) {
-	if viper.IsSet("settings.currentWorkspace") &&
-		viper.IsSet(fmt.Sprintf("workspaces.%s.env", viper.GetString("settings.currentWorkspace"))) {
-		var currentWorkspace = viper.GetString("settings.currentWorkspace")
+func EnvRun(_ *cobra.Command, _ []string) {
+	if viper.IsSet("settings.currentworkspace") &&
+		viper.IsSet(fmt.Sprintf("workspaces.%s.env", viper.GetString("settings.currentworkspace"))) {
+		var currentWorkspace = viper.GetString("settings.currentworkspace")
 		var environment = viper.GetStringMapString(fmt.Sprintf("workspaces.%s.env", currentWorkspace))
 		for k := range environment {
-			fmt.Printf("%s=%s\n", k, environment[k])
+			fmt.Printf("%s=%s\n", strings.ToUpper(k), environment[k])
 		}
+		fmt.Printf("WS_ENV=%s\n", currentworkspace)
 	}
 }
 

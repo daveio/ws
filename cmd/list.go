@@ -23,9 +23,9 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/spf13/viper"
-
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+	"sort"
 )
 
 // listCmd represents the list command
@@ -42,14 +42,19 @@ to quickly create a Cobra application.`,
 	Args: cobra.NoArgs,
 }
 
-func ListRun(cmd *cobra.Command, args []string) {
+func ListRun(cmd *cobra.Command, _ []string) {
 	var workspaces = viper.GetStringMapStringSlice("workspaces")
+	var workspaceList = make([]string, 0, len(workspaces))
 	for key := range workspaces {
-		currentWorkspace := viper.GetString("settings.currentWorkspace")
+		workspaceList = append(workspaceList, key)
+	}
+	sort.Strings(workspaceList)
+	for _, key := range workspaceList {
+		currentWorkspace := viper.GetString("settings.currentworkspace")
 		boringFlag, err := cmd.Flags().GetBool("boring")
 		if err == nil && !boringFlag {
 			if key == currentWorkspace {
-				fmt.Print("✅ ")
+				fmt.Print(" ✔︎ ")
 			} else {
 				fmt.Print("   ")
 			}

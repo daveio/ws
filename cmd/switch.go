@@ -25,6 +25,9 @@ import (
 	"fmt"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"os"
+	"os/exec"
+	"strings"
 )
 
 // switchCmd represents the switch command
@@ -52,11 +55,42 @@ func SwitchValidArgs() []string {
 	return keys
 }
 
-func SwitchRun(cmd *cobra.Command, args []string) {
+func SwitchRun(_ *cobra.Command, args []string) {
 	var requestedWorkspace = args[0]
-	var currentWorkspace = viper.GetString("settings.currentWorkspace")
+	var currentWorkspace = viper.GetString("settings.currentworkspace")
+
+	if requestedWorkspace == currentWorkspace {
+		fmt.Printf("Current workspace is already %s\n", requestedWorkspace)
+		return
+	}
+
 	fmt.Printf("Switching from %s to %s\n", currentWorkspace, requestedWorkspace)
-	// TODO: implementation
+
+	// u:beforeDown, o:down, u:afterDown, u:beforeUp, n:up, u:afterUp
+	execOrder := []string{
+		"hooks.beforedown",
+		fmt.Sprintf("workspaces.%s.down", currentWorkspace),
+		"hooks.afterdown",
+		"hooks.beforeup",
+		fmt.Sprintf("workspaces.%s.up", requestedWorkspace),
+		"hooks.afterup",
+	}
+
+	for _, cfgPath := range execOrder {
+		commands := viper.GetStringSlice(cfgPath)
+		for _, cmd := range commands {
+			cmd_array := strings.Split(cmd, " ") // TODO: do this more intelligently, or use an array in the YAML
+			thisCommand := exec.Command(cmd_array[0], cmd_array[1:]...)
+			thisCommand.Env = os.Environ()
+			thisCommand.Stdout = os.Stdout
+			thisCommand.Stderr = os.Stderr
+			_ = thisCommand.Run()
+		}
+	}
+
+	viper.Set("settings.currentworkspace", requestedWorkspace)
+	_ = viper.WriteConfig()
+
 }
 
 func init() {

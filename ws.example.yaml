@@ -18,7 +18,7 @@ workspaces: # workspace definitions
       - gcloud config set project example_project
       - kubectx example_cluster
     down: [] # commands to run when switching FROM this workspace, before new workspace's 'up' commands
-    env: # environment variables to set. {} on the same line for none. requires shell integration, see `ws install`
+    env: # environment variables to set. will be uppercased. {} for none. requires shell integration, see `ws install`
       EXAMPLE_VAR: abc123 # set environment variable $EXAMPLE_VAR to 'abc123'
       ANOTHER_VAR: "true" # set environment variable $ANOTHER_VAR to 'true'
       YET_ANOTHER_VAR: "12345" # set environment variable $YET_ANOTHER_VAR to '12345'
