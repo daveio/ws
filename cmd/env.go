@@ -48,7 +48,6 @@ func EnvRun(_ *cobra.Command, _ []string) {
 		for k := range environment {
 			fmt.Printf("%s=%s\n", strings.ToUpper(k), environment[k])
 		}
-		fmt.Printf("WS_ENV=%s\n", currentWorkspace)
 	}
 }
 
