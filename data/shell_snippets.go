@@ -20,6 +20,10 @@ precmd_functions+=ws_hook
 
 const FishTemplate string = `
 function ws_hook --on-event fish_prompt
-    eval "(ws env)"
+  set ws_vars (ws env)
+  for var in $ws_vars
+    set pair (string split = $var)
+    set -gx $pair[1] $pair[2]
+  end
 end
 `
