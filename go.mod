@@ -1,6 +1,6 @@
 module github.com/daveio/ws
 
-go 1.23
+go 1.23.1
 
 require (
 	github.com/mitchellh/go-homedir v1.1.0
