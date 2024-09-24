@@ -40,8 +40,8 @@ and usage of using your command. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
-	Run: SwitchRun,
-	Args: cobra.ExactValidArgs(1),
+	Run:       SwitchRun,
+	Args:      cobra.ExactValidArgs(1),
 	ValidArgs: SwitchValidArgs(),
 }
 
@@ -50,7 +50,7 @@ func SwitchValidArgs() []string {
 	var workspaces = viper.GetStringMapStringSlice("workspaces")
 	var keys = make([]string, 0, len(workspaces))
 	for k := range workspaces {
-        keys = append(keys, k)
+		keys = append(keys, k)
 	}
 	return keys
 }

@@ -30,13 +30,13 @@ import (
 
 // envCmd represents the env command
 var envCmd = &cobra.Command{
-	Use: "env",
+	Use:     "env",
 	Example: `ws env`,
-	Short: "Output environment for current workspace for your shell to eval",
+	Short:   "Output environment for current workspace for your shell to eval",
 	Long: `Outputs the environment values for the current workspace. Used
 by shell integration, to be eval'd or sourced at each prompt render.`,
-	Run:       EnvRun,
-	Args:      cobra.NoArgs, // cobra.ExactValidArgs(1),
+	Run:  EnvRun,
+	Args: cobra.NoArgs, // cobra.ExactValidArgs(1),
 	// ValidArgs: []string{"bash", "zsh", "fish"},
 }
 

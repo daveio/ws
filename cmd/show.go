@@ -32,9 +32,9 @@ import (
 var showCmd = &cobra.Command{
 	Use:   "show",
 	Short: "Print the current workspace name",
-	Long: `Print the current workspace name to the console.`,
-	Run: ShowRun,
-	Args: cobra.NoArgs,
+	Long:  `Print the current workspace name to the console.`,
+	Run:   ShowRun,
+	Args:  cobra.NoArgs,
 }
 
 func ShowRun(_ *cobra.Command, _ []string) {

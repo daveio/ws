@@ -34,13 +34,13 @@ var (
 		Template:   data.ZshTemplate,
 	}
 	fishShell = Shell{
-		Name:       "fish",
+		Name: "fish",
 		ConfigFile: fmt.Sprintf("%s%s.config%sfish%sconfig.fish",
 			GetHomedir(),
 			string(os.PathSeparator),
 			string(os.PathSeparator),
 			string(os.PathSeparator)),
-		Template:   data.FishTemplate,
+		Template: data.FishTemplate,
 	}
 	shellDetectOrder = [3]Shell{fishShell, zshShell, bashShell}
 )
@@ -69,7 +69,7 @@ func DetectShell() (err error, shell Shell) {
 }
 
 func Check(e error) {
-    if e != nil {
-        panic(e)
-    }
+	if e != nil {
+		panic(e)
+	}
 }

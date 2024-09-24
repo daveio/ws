@@ -69,7 +69,6 @@ func InstallRun(_ *cobra.Command, _ []string) {
 	}
 }
 
-
 func init() {
 	rootCmd.AddCommand(installCmd)
 

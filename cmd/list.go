@@ -38,7 +38,7 @@ and usage of using your command. For example:
 Cobra is a CLI library for Go that empowers applications.
 This application is a tool to generate the needed files
 to quickly create a Cobra application.`,
-	Run: ListRun,
+	Run:  ListRun,
 	Args: cobra.NoArgs,
 }
 
@@ -59,7 +59,7 @@ func ListRun(cmd *cobra.Command, _ []string) {
 				fmt.Print("   ")
 			}
 		}
-        fmt.Printf("%s\n", key)
+		fmt.Printf("%s\n", key)
 
 	}
 }
