@@ -6,7 +6,7 @@ Workspace Switcher: a tool to switch between shell contexts
 
 Usable. Some text is still boilerplate, but the logic is in place.
 
-Install with `go get -u github.com/daveio/ws`.
+Install with `go get -u github.com/daveio/ws`
 
 Use `ws.example.yaml` to construct a config file and save it to `~/.ws.yaml`.
 
