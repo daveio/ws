@@ -15,3 +15,5 @@
 vendor/
 .ws.yaml
 ws
+**/.DS_Store
+

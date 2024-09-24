@@ -23,10 +23,11 @@ package cmd
 
 import (
 	"fmt"
+	"os"
+	"strings"
+
 	"github.com/daveio/ws/data"
 	"github.com/daveio/ws/util"
-	"io/ioutil"
-	"strings"
 
 	"github.com/spf13/cobra"
 )
@@ -45,7 +46,7 @@ var installCmd = &cobra.Command{
 func InstallRun(_ *cobra.Command, _ []string) {
 	err, thisShell := util.DetectShell()
 	util.Check(err)
-	readBytes, err := ioutil.ReadFile(thisShell.ConfigFile)
+	readBytes, err := os.ReadFile(thisShell.ConfigFile)
 	util.Check(err)
 	readContent := string(readBytes)
 	if strings.Contains(readContent, thisShell.Template) {
@@ -59,12 +60,12 @@ func InstallRun(_ *cobra.Command, _ []string) {
 			data.FooterComment,
 		))
 		backupPath := fmt.Sprintf("%s.ws.old", thisShell.ConfigFile)
-		util.Check(ioutil.WriteFile(
+		util.Check(os.WriteFile(
 			backupPath, []byte(readContent), 0640))
-		util.Check(ioutil.WriteFile(
+		util.Check(os.WriteFile(
 			thisShell.ConfigFile, writeContent, 0640))
 		fmt.Printf("Installation complete: ws env hook installed for %s.\n", thisShell.Name)
-		fmt.Println("You may need to restart any terminal windows, or log out and back in.")
+		fmt.Println("You masffy need to restart any terminal windows, or log out and back in.")
 		fmt.Printf("Your old shell configuration has been backed up to %s if you need it.\n", backupPath)
 	}
 }
