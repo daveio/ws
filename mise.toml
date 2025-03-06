@@ -1,0 +1,8 @@
+[env]
+WS_MISE_ACTIVE = "true"
+
+[settings]
+env_file = '.env'
+
+[tools]
+go = '1.23.4'
