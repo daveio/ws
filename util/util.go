@@ -2,10 +2,11 @@ package util
 
 import (
 	"fmt"
-	"github.com/daveio/ws/data"
-	"github.com/mitchellh/go-homedir"
 	"os"
 	"strings"
+
+	"github.com/daveio/ws/data"
+	"github.com/mitchellh/go-homedir"
 )
 
 type Shell struct {
