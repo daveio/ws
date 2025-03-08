@@ -55,18 +55,18 @@ func GetHomedir() (path string) {
 	}
 }
 
-func DetectShell() (shell Shell, err error) {
+func DetectShell() (err error, shell Shell) {
 	currentShellName, ok := os.LookupEnv("SHELL")
 	if ok && currentShellName != "" {
 		// $SHELL is set
 		for _, thisShell := range shellDetectOrder {
 			if strings.Contains(currentShellName, thisShell.Name) {
 				// $SHELL contains thisShell.Name
-				return thisShell, nil
+				return nil, thisShell
 			}
 		}
 	}
-	return Shell{}, ShellDetectionError{EnvVar: currentShellName}
+	return ShellDetectionError{EnvVar: currentShellName}, Shell{}
 }
 
 func Check(e error) {
