@@ -7,5 +7,6 @@
 	"go.alternateTools": {
 		"go": "${workspaceFolder}/.vscode/mise-tools/go",
 		"dlv": "${workspaceFolder}/.vscode/mise-tools/dlv"
-	}
+	},
+	"workbench.colorCustomizations": {}
 }
