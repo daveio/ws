@@ -1,5 +1,5 @@
 [env]
-WS_MISE_ACTIVE = "true"
+WS_MISE_ACTIVE = 'true'
 
 [settings]
 env_file = '.env'
