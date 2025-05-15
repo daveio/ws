@@ -5,4 +5,4 @@ WS_MISE_ACTIVE = 'true'
 env_file = '.env'
 
 [tools]
-go = '1.24.2'
+go = '1.24.3'
