@@ -1,18 +1,16 @@
 version: 2
 updates:
-  # Configuration for gomod
-  - package-ecosystem: gomod
-    directory: /
-    schedule:
-      interval: daily
-    open-pull-requests-limit: 10
-    assignees:
-      - daveio
-  # Configuration for github-actions
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: daily
-    open-pull-requests-limit: 10
+    open-pull-requests-limit: 100
+    assignees:
+      - daveio
+  - package-ecosystem: gomod
+    directory: /
+    schedule:
+      interval: daily
+    open-pull-requests-limit: 100
     assignees:
       - daveio
